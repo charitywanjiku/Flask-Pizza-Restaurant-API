@@ -28,4 +28,19 @@ def update_restaurant(id):
     db.session.commit()
     return jsonify({'message': 'Restaurant updated successfully'}), 200
 
-# Other routes...
+# Route to create a new restaurant
+@app.route('/restaurants', methods=['POST'])
+def create_restaurant():
+    data = request.json
+    new_restaurant = Restaurant(name=data['name'], address=data['address'])
+    db.session.add(new_restaurant)
+    db.session.commit()
+    return jsonify({'message': 'Restaurant created successfully'}), 201
+
+# Route to delete a restaurant
+@app.route('/restaurants/<int:id>', methods=['DELETE'])
+def delete_restaurant(id):
+    restaurant = Restaurant.query.get_or_404(id)
+    db.session.delete(restaurant)
+    db.session.commit()
+    return jsonify({'message': 'Restaurant deleted successfully'}), 200
