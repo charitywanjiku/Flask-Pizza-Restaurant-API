@@ -26,7 +26,20 @@ def get_restaurant(id):
         'name': restaurant.name,
         'address': restaurant.address,
         'pizzas': [{'id': p.id, 'name': p.name, 'ingredients': p.ingredients} for p in restaurant.pizzas]
+
     })
+@app.route('/pizzas', methods=['GET'])
+def get_pizzas():
+    pizzas = Pizza.query.all()
+    pizza_list = []
+    for pizza in pizzas:
+        pizza_dict = {
+            'id': pizza.id,
+            'name': pizza.name,
+            'ingredients': pizza.ingredients
+        }
+        pizza_list.append(pizza_dict)
+    return jsonify(pizza_list), 200
 
 @app.route('/restaurants/<int:id>', methods=['PATCH'])
 def update_restaurant(id):
