@@ -28,18 +28,19 @@ def get_restaurant(id):
         'pizzas': [{'id': p.id, 'name': p.name, 'ingredients': p.ingredients} for p in restaurant.pizzas]
 
     })
+from flask import jsonify
+
 @app.route('/pizzas', methods=['GET'])
 def get_pizzas():
     pizzas = Pizza.query.all()
-    pizza_list = []
+    pizza_dict = {}
     for pizza in pizzas:
-        pizza_dict = {
-            'id': pizza.id,
+        pizza_dict[pizza.id] = {
             'name': pizza.name,
             'ingredients': pizza.ingredients
         }
-        pizza_list.append(pizza_dict)
-    return jsonify(pizza_list), 200
+    return jsonify(pizza_dict), 200
+
 
 @app.route('/restaurants/<int:id>', methods=['PATCH'])
 def update_restaurant(id):
